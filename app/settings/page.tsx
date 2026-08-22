@@ -19,7 +19,7 @@ export default function SettingsPage() {
     <div className="mx-auto max-w-5xl p-4 sm:p-8">
       <Link
         href="/"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground cursor-pointer"
       >
         <ArrowLeft className="size-4" />
         Back to overview
@@ -60,7 +60,7 @@ export default function SettingsPage() {
               type="checkbox"
               checked={emailUpdates}
               onChange={(event) => setEmailUpdates(event.target.checked)}
-              className="size-4 accent-primary"
+              className="size-4 accent-primary cursor-pointer"
             />
           </label>
 
@@ -77,7 +77,7 @@ export default function SettingsPage() {
               type="checkbox"
               checked={lowStock}
               onChange={(event) => setLowStock(event.target.checked)}
-              className="size-4 accent-primary"
+              className="size-4 accent-primary cursor-pointer"
             />
           </label>
         </div>
@@ -93,7 +93,7 @@ export default function SettingsPage() {
               ""
             )}
           </span>
-          <Button onClick={save}>Save preferences</Button>
+          <Button onClick={save} className="cursor-pointer">Save preferences</Button>
         </div>
       </section>
     </div>

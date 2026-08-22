@@ -93,9 +93,17 @@ Ensure you have **Node.js 18+** and `npm` installed on your machine.
 │   ├── layout.tsx            # Root layout wrapping AppShell & SEO metadata
 │   └── page.tsx              # Overview page with system metrics
 ├── components/
+│   ├── products/
+│   │   ├── product-filters.tsx # Search, category filter & sort toolbar
+│   │   ├── product-modal.tsx   # Add & Edit product modal dialog
+│   │   └── product-table.tsx   # Desktop table, mobile cards & pagination
 │   ├── ui/
 │   │   └── button.tsx        # Custom accessible Button component
-│   └── app-shell.tsx         # Global layout shell (Sidebar, Header, Mobile Nav)
+│   ├── app-shell.tsx         # Central layout shell wrapper
+│   ├── breadcrumbs.tsx       # Dynamic section / page breadcrumbs
+│   ├── header.tsx            # Top navigation header bar
+│   ├── sidebar.tsx           # Persistent desktop sidebar & mobile drawer panel
+│   └── theme-provider.tsx    # Context API state manager for light/dark theme
 ├── lib/
 │   ├── products.ts           # API fetchers, type definitions & helper utilities
 │   └── utils.ts              # Tailwind class merger (cn)

@@ -43,7 +43,7 @@ export default function OverviewPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => router.push("/products")}>
+          <Button onClick={() => router.push("/products")} className="cursor-pointer">
             <Package className="mr-2 size-4" />
             Manage Products
           </Button>
@@ -93,7 +93,7 @@ export default function OverviewPage() {
           <Button
             variant="outline"
             size="sm"
-            className="mt-4 w-full"
+            className="mt-4 w-full cursor-pointer"
             onClick={() => router.push("/products")}
           >
             Go to Products <ArrowRight className="ml-1 size-4" />
@@ -119,7 +119,7 @@ export default function OverviewPage() {
           <Button
             variant="outline"
             size="sm"
-            className="mt-4 w-full"
+            className="mt-4 w-full cursor-pointer"
             onClick={() => router.push("/analytics")}
           >
             View Analytics <ArrowRight className="ml-1 size-4" />
