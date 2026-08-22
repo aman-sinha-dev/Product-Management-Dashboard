@@ -3,6 +3,7 @@ import './globals.css'
 import { AppShell } from '@/components/app-shell'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://free-product-management-dashboard.vercel.app'),
   title: {
     default: 'Product Management Dashboard | Inventory & Stock Control',
     template: '%s | ProductHub Management Dashboard',
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
     title: 'Product Management Dashboard | Inventory & Stock Control',
     description:
       'Manage product catalog, track stock levels, and monitor inventory metrics in one focused workspace.',
+    url: 'https://free-product-management-dashboard.vercel.app',
     type: 'website',
     locale: 'en_US',
     siteName: 'ProductHub',

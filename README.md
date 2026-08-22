@@ -1,6 +1,10 @@
 # Product Management Dashboard
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-blue?style=for-the-badge&logo=vercel)](https://free-product-management-dashboard.vercel.app)
+
 A modern, responsive, and feature-rich **Product & Inventory Management Dashboard** built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS**. It connects to the [DummyJSON Products API](https://dummyjson.com/docs/products) to manage product catalogs, stock levels, analytics, and workspace settings.
+
+🔗 **Live Application URL**: [https://free-product-management-dashboard.vercel.app](https://free-product-management-dashboard.vercel.app)
 
 ---
 
@@ -55,7 +59,7 @@ Ensure you have **Node.js 18+** and `npm` installed on your machine.
 3. **Configure Environment Variables**:
    Copy the example environment file:
    ```bash
-   cp .env.example
+   cp .env.example .env.local
    ```
    *`.env.example` contains:*
    ```env
