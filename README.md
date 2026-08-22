@@ -102,13 +102,17 @@ Ensure you have **Node.js 18+** and `npm` installed on your machine.
 │   ├── app-shell.tsx         # Central layout shell wrapper
 │   ├── breadcrumbs.tsx       # Dynamic section / page breadcrumbs
 │   ├── header.tsx            # Top navigation header bar
+│   ├── products-provider.tsx # Context API persistent state manager for products
 │   ├── sidebar.tsx           # Persistent desktop sidebar & mobile drawer panel
 │   └── theme-provider.tsx    # Context API state manager for light/dark theme
 ├── lib/
 │   ├── products.ts           # API fetchers, type definitions & helper utilities
 │   └── utils.ts              # Tailwind class merger (cn)
-├── .env.example              # Example environment variable file
-├── package.json              # Dependencies and project scripts
+├── public/                   # Favicons, Apple Touch icons & brand assets
+├── .env.example              # Template environment variable configuration
+├── next.config.mjs           # Next.js configuration
+├── package.json              # Project dependencies and scripts
+├── tsconfig.json             # TypeScript compiler options
 └── README.md                 # Project documentation
 ```
 
@@ -118,7 +122,7 @@ Ensure you have **Node.js 18+** and `npm` installed on your machine.
 
 1. **Debounced Search**: Search input uses a 250ms debounce window to prevent unnecessary recalculations on every keystroke.
 2. **Memoized Derivations**: Category lists, filtered results, and sorted datasets are wrapped in `useMemo`.
-3. **Optimistic State Management**: Add and Edit operations update the local state immediately while sync requests complete in the background.
+3. **Persistent Context State**: Add and Edit operations update the global `ProductsProvider` state with `localStorage` fallback, ensuring custom products resolve seamlessly on `/products/[id]` detail routes.
 4. **Rich Metadata**: Dynamic OpenGraph, Twitter Cards, dynamic product detail meta titles, and structured JSON-LD ready layout.
 
 ---
