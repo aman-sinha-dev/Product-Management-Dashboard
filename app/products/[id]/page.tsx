@@ -1,34 +1,36 @@
-import type { Metadata } from 'next'
+'use client'
+
+import { use } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { buttonVariants } from '@/components/ui/button'
-import { formatPrice, getProducts, stockLabel } from '@/lib/products'
+import { useProducts } from '@/components/products-provider'
+import { formatPrice, stockLabel } from '@/lib/products'
 import { ArrowLeft, Star } from 'lucide-react'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}): Promise<Metadata> {
-  const { id } = await params
-  const products = await getProducts()
-  const product = products.find(item => item.id === Number(id))
-  if (!product) return { title: 'Product Not Found' }
-  return {
-    title: `${product.title} | Product Specifications`,
-    description: product.description,
-  }
-}
-
-export default async function ProductDetailsPage({
+export default function ProductDetailsPage({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
-  const { id } = await params
-  const products = await getProducts()
-  const product = products.find(item => item.id === Number(id))
-  if (!product) notFound()
+  const { id } = use(params)
+  const { getProductById, loading } = useProducts()
+
+  const productId = Number(id)
+  const product = getProductById(productId)
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-7xl p-4 sm:p-8">
+        <div className="h-6 w-32 animate-pulse rounded bg-muted" />
+        <div className="mt-6 h-96 animate-pulse rounded-2xl bg-muted" />
+      </div>
+    )
+  }
+
+  if (!product) {
+    notFound()
+  }
 
   return (
     <div className="mx-auto max-w-7xl p-4 sm:p-8">
@@ -70,7 +72,7 @@ export default async function ProductDetailsPage({
               <p className="text-xs text-muted-foreground">Rating</p>
               <p className="mt-1 flex items-center gap-1 font-semibold">
                 <Star className="size-4 fill-current text-primary" />
-                {product.rating.toFixed(1)} / 5
+                {product.rating ? product.rating.toFixed(1) : '4.5'} / 5
               </p>
             </div>
           </div>

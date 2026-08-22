@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button'
 import { ProductFilters } from '@/components/products/product-filters'
 import { emptyForm, FormState, ProductModal } from '@/components/products/product-modal'
 import { ProductTable } from '@/components/products/product-table'
-import { getProducts, Product, saveProduct } from '@/lib/products'
+import { useProducts } from '@/components/products-provider'
+import { Product } from '@/lib/products'
 import { Package, Plus, RefreshCw } from 'lucide-react'
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { products, loading, error, loadProducts, addProduct, updateProduct } =
+    useProducts()
+
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [category, setCategory] = useState('all')
@@ -24,24 +25,6 @@ export default function ProductsPage() {
   const [notice, setNotice] = useState('')
   const [saving, setSaving] = useState(false)
   const pageSize = 8
-
-  const load = async () => {
-    setLoading(true)
-    setError('')
-    try {
-      setProducts(await getProducts())
-    } catch {
-      setError(
-        'We couldn’t load the catalog. Check your connection and try again.'
-      )
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    load()
-  }, [])
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(query), 250)
@@ -128,44 +111,27 @@ export default function ProductsPage() {
       return notify('Complete all required fields with valid values.')
 
     setSaving(true)
-    const optimistic = {
-      ...(editing ?? {}),
-      id: editing?.id ?? Date.now(),
+    const payload = {
       title: form.title.trim(),
       category: form.category.trim(),
+      brand: form.brand.trim(),
       price: Number(form.price),
       stock: Number(form.stock),
       description: form.description.trim(),
-      brand: form.brand.trim(),
       thumbnail: form.imageUrl.trim(),
-      images: [form.imageUrl.trim()],
-      rating: editing?.rating ?? 4.5,
-      discountPercentage: editing?.discountPercentage ?? 0,
-    } as Product
-
-    setProducts((current) =>
-      editing
-        ? current.map((p) => (p.id === editing.id ? optimistic : p))
-        : [optimistic, ...current]
-    )
-    setFormOpen(false)
-    notify(editing ? 'Product updated' : 'Product added')
+    }
 
     try {
-      await saveProduct(
-        {
-          title: form.title,
-          category: form.category,
-          brand: form.brand,
-          price: Number(form.price),
-          stock: Number(form.stock),
-          description: form.description,
-          thumbnail: form.imageUrl,
-        },
-        editing?.id
-      )
+      if (editing) {
+        await updateProduct(editing.id, payload)
+        notify('Product updated')
+      } else {
+        await addProduct(payload)
+        notify('Product added successfully')
+      }
+      setFormOpen(false)
     } catch {
-      notify('Saved locally for this session')
+      notify('Failed to save product')
     } finally {
       setSaving(false)
     }
@@ -208,7 +174,12 @@ export default function ProductsPage() {
           <div className="m-6 rounded-lg border border-destructive/30 bg-destructive/10 p-5">
             <p className="font-medium">Couldn’t load products</p>
             <p className="mt-1 text-sm text-muted-foreground">{error}</p>
-            <Button variant="outline" size="sm" className="mt-4 cursor-pointer" onClick={load}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-4 cursor-pointer"
+              onClick={loadProducts}
+            >
               <RefreshCw data-icon="inline-start" />
               Retry
             </Button>

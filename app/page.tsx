@@ -1,32 +1,20 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { formatPrice, getProducts, Product } from "@/lib/products";
-import {
-  ArrowRight,
-  BarChart3,
-  Package,
-} from "lucide-react";
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { useProducts } from '@/components/products-provider'
+import { formatPrice } from '@/lib/products'
+import { ArrowRight, BarChart3, Package } from 'lucide-react'
 
 export default function OverviewPage() {
-  const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter()
+  const { products, loading } = useProducts()
 
-  useEffect(() => {
-    getProducts()
-      .then((data) => setProducts(data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
-
-  const totalValue = products.reduce((sum, p) => sum + p.price * p.stock, 0);
-  const lowStockCount = products.filter((p) => p.stock < 20).length;
+  const totalValue = products.reduce((sum, p) => sum + p.price * p.stock, 0)
+  const lowStockCount = products.filter((p) => p.stock < 20).length
   const avgRating = products.length
     ? (products.reduce((a, p) => a + p.rating, 0) / products.length).toFixed(1)
-    : "0.0";
+    : '0.0'
 
   return (
     <div className="mx-auto max-w-7xl p-4 sm:p-8">
@@ -43,7 +31,7 @@ export default function OverviewPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => router.push("/products")} className="cursor-pointer">
+          <Button onClick={() => router.push('/products')} className="cursor-pointer">
             <Package className="mr-2 size-4" />
             Manage Products
           </Button>
@@ -53,19 +41,19 @@ export default function OverviewPage() {
       {/* Primary Stats Grid */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {[
-          ["Catalog Value", formatPrice(totalValue), "Across all inventory"],
-          ["Total Products", products.length.toString(), "In active catalog"],
+          ['Catalog Value', formatPrice(totalValue), 'Across all inventory'],
+          ['Total Products', products.length.toString(), 'In active catalog'],
           [
-            "Low Stock Items",
+            'Low Stock Items',
             lowStockCount.toString(),
-            "Requires reorder attention",
+            'Requires reorder attention',
           ],
-          ["Average Rating", `${avgRating} / 5`, "Overall customer sentiment"],
+          ['Average Rating', `${avgRating} / 5`, 'Overall customer sentiment'],
         ].map(([title, value, detail]) => (
           <div key={title} className="rounded-xl border bg-card p-5">
             <p className="text-sm text-muted-foreground">{title}</p>
             <p className="mt-3 text-2xl font-semibold">
-              {loading ? "—" : value}
+              {loading ? '—' : value}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">{detail}</p>
           </div>
@@ -94,7 +82,7 @@ export default function OverviewPage() {
             variant="outline"
             size="sm"
             className="mt-4 w-full cursor-pointer"
-            onClick={() => router.push("/products")}
+            onClick={() => router.push('/products')}
           >
             Go to Products <ArrowRight className="ml-1 size-4" />
           </Button>
@@ -120,12 +108,12 @@ export default function OverviewPage() {
             variant="outline"
             size="sm"
             className="mt-4 w-full cursor-pointer"
-            onClick={() => router.push("/analytics")}
+            onClick={() => router.push('/analytics')}
           >
             View Analytics <ArrowRight className="ml-1 size-4" />
           </Button>
         </div>
       </div>
     </div>
-  );
+  )
 }
